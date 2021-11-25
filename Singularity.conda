@@ -1,0 +1,46 @@
+Bootstrap: docker
+From: ubuntu:21.04
+
+# Reads:
+#   environment.yml
+#
+# Creates:
+#   environment (folder)
+#
+# Usage:
+#    $ ./conda.sif python myscript.py
+#    runs myscript.py inside the conda environment defined by environment.yml
+#
+#    $ ./conda.sif python
+#    opens Python shell inside the conda environment defined by environment.yml
+
+%post
+  export DEBIAN_FRONTEND=noninteractive
+  apt-get update -y
+  apt install -y wget
+  apt install -y python3
+
+  wget -q -O /tmp/miniconda.sh https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh
+  bash /tmp/miniconda.sh -b -p /opt/miniconda
+  rm /tmp/miniconda.sh
+
+  # otherwise sh points to dash
+  ln -sf /bin/bash /usr/bin/sh
+
+%environment
+  export LC_ALL=C
+
+%runscript
+  eval "$(/opt/miniconda/bin/conda shell.bash hook)"
+  if [ ! -d "environment" ]; then
+    conda env create --prefix environment --file environment.yml
+  else
+    if [ "environment.yml" -nt "environment" ]; then
+      echo "environment.yml is newer than environment: updating environment"
+      conda env update --prefix environment --file environment.yml --prune
+    fi
+  fi
+
+  conda activate ./environment
+
+  $@

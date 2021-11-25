@@ -1,0 +1,36 @@
+name: singularity-test
+
+on:
+  pull_request: []
+
+jobs:
+  builder:
+    name: Test container builds
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+      - uses: eWaterCycle/setup-singularity@v6
+        with:
+          singularity-version: 3.7.1
+      - name: Build the singularity container
+        run: |
+            # For each Singularity* container, build based on the prefix (tag)
+            for recipe in $(ls Singularity*); do
+                echo "Building $recipe"
+                tag=$(echo "${recipe/Singularity\./}")
+                # If we find empty, use latest
+                if [ "$tag" == "Singularity" ]; then
+                    tag=latest
+                fi
+                # Build the container and name by tag
+                echo "Tag is $tag."
+                container="$tag.sif"
+                singularity build --fakeroot container.sif "$recipe"
+                if [ "$?" == "0" ]; then
+                    echo "Successfully built container $container."
+                    mv container.sif "$container"
+                else
+                    echo "There was an issue building $container."
+                fi
+            done
