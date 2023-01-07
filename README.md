@@ -27,6 +27,20 @@ Open Python shell inside the Conda environment defined by `environment.yml`:
 $ ./conda.sif python
 ```
 
+When running for the first time (and thus installing the environment),
+the installer will inform you that:
+```
+# To activate this environment, use
+#
+#     $ conda activate /home/user/example/environment
+#
+# To deactivate an active environment, use
+#
+#     $ conda deactivate
+```
+But you can ignore this. The container image will automatically activate the
+environment for you.
+
 First time you run either of the above commands it will take a bit of time
 since it needs to install the dependencies into the `environment` folder.
 However, subsequent runs will start basically immediately since the environment
