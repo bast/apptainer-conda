@@ -1,5 +1,11 @@
 # Local Conda environments via Singularity
 
+The nice thing about this approach is that you don't need to install Conda and
+you don't need to modify your environment/bashrc/settings.
+
+I use it to install dependencies that may be tough to install on a
+supercomputer or on my NixOS environment.
+
 How to fetch the image:
 ```
 $ singularity pull https://github.com/bast/singularity-conda/releases/download/0.3.0/conda.sif
