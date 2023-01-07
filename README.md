@@ -13,8 +13,9 @@ $ singularity pull https://github.com/bast/singularity-conda/releases/download/0
 
 ## Usage
 
-- Reads: `environment.yml`
-- Creates: `environment` (folder)
+- Reads the Conda environment file
+  [environment.yml](https://conda.io/projects/conda/en/latest/user-guide/tasks/manage-environments.html#create-env-file-manually).
+- Creates the folder `environment`.
 
 Run `myscript.py` inside the Conda environment defined by `environment.yml`:
 ```
