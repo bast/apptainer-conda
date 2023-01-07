@@ -2,7 +2,7 @@
 
 How to fetch the image:
 ```
-$ singularity pull https://github.com/bast/singularity-conda/releases/download/0.2.0/conda.sif
+$ singularity pull https://github.com/bast/singularity-conda/releases/download/0.3.0/conda.sif
 ```
 
 ## Usage
