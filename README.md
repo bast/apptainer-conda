@@ -32,6 +32,9 @@ since it needs to install the dependencies into the `environment` folder.
 However, subsequent runs will start basically immediately since the environment
 is then there.
 
+
+## Micromamba and environment files
+
 Under the hood, it uses
 [Micromamba](https://mamba.readthedocs.io/en/latest/user_guide/micromamba.html)
 instead of Conda in order to speed up installations but it should not really
@@ -59,6 +62,14 @@ dependencies:
 ```
 
 But I believe that specifying channels explicitly is anyway good practice.
+
+
+## Running on a supercomputer/cluster
+
+On a cluster you might need to bind folders like here:
+```
+$ env SINGULARITY_BIND="/cluster" ./conda.sif python
+```
 
 ---
 
