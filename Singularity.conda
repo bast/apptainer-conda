@@ -28,6 +28,8 @@ From: mambaorg/micromamba:1.2.0
 %runscript
   eval "$(micromamba shell hook --shell=bash)"
 
+  export CONDA_PKGS_DIRS=./environment/pkgs
+
   recreate_environment=false
   if [ ! -d "environment" ]; then
     recreate_environment=true

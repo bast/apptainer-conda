@@ -8,7 +8,7 @@ supercomputer or on my NixOS environment.
 
 How to fetch the image:
 ```
-$ singularity pull https://github.com/bast/singularity-conda/releases/download/0.4.0/conda.sif
+$ singularity pull https://github.com/bast/singularity-conda/releases/download/0.5.0/conda.sif
 ```
 
 ## Usage
@@ -31,6 +31,9 @@ First time you run either of the above commands it will take a bit of time
 since it needs to install the dependencies into the `environment` folder.
 However, subsequent runs will start basically immediately since the environment
 is then there.
+
+
+## Micromamba and environment files
 
 Under the hood, it uses
 [Micromamba](https://mamba.readthedocs.io/en/latest/user_guide/micromamba.html)
@@ -59,6 +62,14 @@ dependencies:
 ```
 
 But I believe that specifying channels explicitly is anyway good practice.
+
+
+## Running on a supercomputer/cluster
+
+On a cluster you might need to bind folders like here:
+```
+$ env SINGULARITY_BIND="/cluster" ./conda.sif python
+```
 
 ---
 
