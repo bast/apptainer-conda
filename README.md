@@ -8,7 +8,7 @@ supercomputer or on my NixOS environment.
 
 How to fetch the image:
 ```
-$ singularity pull https://github.com/bast/singularity-conda/releases/download/0.5.0/conda.sif
+$ singularity pull https://github.com/bast/singularity-conda/releases/download/0.6.0/conda.sif
 ```
 
 ## Usage
