@@ -1,4 +1,4 @@
-# Local Conda environments via Singularity
+# Local Conda environments via [Apptainer](https://apptainer.org/)
 
 The nice thing about this approach is that you don't need to install Conda and
 you don't need to modify your environment/bashrc/settings.
@@ -8,7 +8,7 @@ supercomputer or on my NixOS environment.
 
 How to fetch the image:
 ```
-$ singularity pull https://github.com/bast/singularity-conda/releases/download/0.6.0/conda.sif
+$ apptainer pull https://github.com/bast/apptainer-conda/releases/download/0.6.0/conda.sif
 ```
 
 ## Usage
@@ -68,10 +68,11 @@ But I believe that specifying channels explicitly is anyway good practice.
 
 On a cluster you might need to bind folders like here:
 ```
-$ env SINGULARITY_BIND="/cluster" ./conda.sif python
+$ env APPTAINER_BIND="/cluster" ./conda.sif python
 ```
 
 ---
 
-I have used this wonderful guide as starting point and inspiration:
-https://github.com/singularityhub/singularity-deploy
+To build the image, I have used [this wonderful
+guide](https://github.com/singularityhub/singularity-deploy) as starting point
+and inspiration.
