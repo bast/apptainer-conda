@@ -1,27 +1,34 @@
-name: singularity-deploy
+name: apptainer-release
 
 on:
-  push:
-    branches:
-      - "main"
+  pull_request:
+    types: [closed]
 
 jobs:
   release:
     name: Create release
+
     runs-on: ubuntu-latest
+
+    if: github.event.pull_request.merged == true
+
+    permissions: write-all
+
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
+      - uses: actions/checkout@v4
+
       - name: Get latest tag
         run: |
             # Get the latest tag, we won't build if it's the current
             git fetch --tags
             latest_tag=$(git tag | tail -1)
             echo "latest_tag=$latest_tag" >> $GITHUB_ENV
+
       - name: Define repository name and release version
         run: |
             release=$(cat VERSION)
             echo "release_tag=$release" >> $GITHUB_ENV
+
       - name: Create release
         id: create_release
         uses: actions/create-release@v1
@@ -33,32 +40,20 @@ jobs:
           release_name: Release ${{ env.release_tag }}
           draft: false
           prerelease: false
-      - uses: eWaterCycle/setup-singularity@v6
+
+      - uses: eWaterCycle/setup-apptainer@v2
         if: ${{ env.release_tag != env.latest_tag }}
         with:
-          singularity-version: 3.7.1
-      - name: Build the singularity container
+          apptainer-version: 1.1.2
+
+      - name: Build the container(s)
         if: ${{ env.release_tag != env.latest_tag }}
         run: |
-            # For each Singularity* container, build based on the prefix (tag)
-            for recipe in $(ls Singularity*); do
-                echo "Building $recipe"
-                tag=$(echo "${recipe/Singularity\./}")
-                # If we find empty, use latest
-                if [ "$tag" == "Singularity" ]; then
-                    tag=latest
-                fi
-                # Build the container and name by tag
-                echo "Tag is $tag."
-                container="$tag.sif"
-                singularity build --fakeroot container.sif "$recipe"
-                if [ "$?" == "0" ]; then
-                    echo "Successfully built container $container."
-                    mv container.sif "$container"
-                else
-                    echo "There was an issue building $container."
-                fi
-            done
+          for definition_file in $(ls *.def); do
+            filename_no_suffix=$(basename ${definition_file} .def)
+            apptainer build ${filename_no_suffix}.sif ${definition_file}
+          done
+
       - name: Upload release assets
         if: ${{ env.release_tag != env.latest_tag }}
         env:
@@ -66,4 +61,5 @@ jobs:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
           tag_name: ${{ env.release_tag }}
         run: |
+          sudo apt-get update && sudo apt-get install -y hub
           hub release edit $(find . -type f -name "*.sif" -printf "-a %p ") -m "" "$tag_name"
