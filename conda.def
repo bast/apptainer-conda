@@ -1,5 +1,5 @@
 Bootstrap: docker
-From: mambaorg/micromamba:1.2.0
+From: mambaorg/micromamba:1.5
 
 # Reads:
 #   environment.yml
@@ -15,8 +15,8 @@ From: mambaorg/micromamba:1.2.0
 #    opens Python shell inside the conda environment defined by environment.yml
 
 %post
-  # git may be needed to pip install from a github repo
   apt-get update
+  # git may be needed to pip install from a github repo
   apt-get install -y --no-install-recommends git
   apt-get clean
   # default sh on ubuntu is dash
