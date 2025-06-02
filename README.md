@@ -8,7 +8,7 @@ supercomputer or on my NixOS environment.
 
 How to fetch the image:
 ```
-$ apptainer pull https://github.com/bast/apptainer-conda/releases/download/0.7.0/conda.sif
+$ apptainer pull https://github.com/bast/apptainer-conda/releases/download/0.8.0/conda.sif
 ```
 
 ## Usage
