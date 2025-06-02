@@ -44,7 +44,7 @@ jobs:
       - uses: eWaterCycle/setup-apptainer@v2
         if: ${{ env.release_tag != env.latest_tag }}
         with:
-          apptainer-version: 1.1.2
+          apptainer-version: 1.4.1
 
       - name: Build the container(s)
         if: ${{ env.release_tag != env.latest_tag }}
