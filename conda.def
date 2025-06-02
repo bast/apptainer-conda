@@ -28,24 +28,22 @@ From: mambaorg/micromamba:2.0
 %runscript
   eval "$(micromamba shell hook --shell=bash)"
 
-  container_dir=$(dirname "$APPTAINER_CONTAINER")
-
-  export CONDA_PKGS_DIRS=${container_dir}/environment/pkgs
+  export CONDA_PKGS_DIRS=./environment/pkgs
 
   recreate_environment=false
-  if [ ! -d "${container_dir}/environment" ]; then
+  if [ ! -d "environment" ]; then
     recreate_environment=true
   else
-    if [ "${container_dir}/environment.yml" -nt "${container_dir}/environment" ]; then
+    if [ "environment.yml" -nt "environment" ]; then
       echo "environment.yml is newer than environment: updating environment"
       recreate_environment=true
     fi
   fi
 
   if "$recreate_environment"; then
-    micromamba -y env create --prefix ${container_dir}/environment --file ${container_dir}/environment.yml
+    micromamba -y env create --prefix ./environment --file environment.yml
   fi
 
-  micromamba activate ${container_dir}/environment
+  micromamba activate ./environment
 
   $@
