@@ -14,6 +14,7 @@ From: mambaorg/micromamba:2.1
 #    $ ./conda.sif python
 #    opens Python shell inside the conda environment defined by environment.yml
 
+
 %post
   apt-get update
   # git may be needed to pip install from a github repo
@@ -22,28 +23,31 @@ From: mambaorg/micromamba:2.1
   # default sh on ubuntu is dash
   ln -sf /bin/bash /bin/sh
 
+
 %environment
-  export LC_ALL=C
+    export LC_ALL=C
+
 
 %runscript
-  eval "$(micromamba shell hook --shell=bash)"
+    eval "$(micromamba shell hook --shell=bash)"
 
-  export CONDA_PKGS_DIRS=./environment/pkgs
+    export CONDA_PKGS_DIRS=./environment/pkgs
+    export CONDA_ENVS_PATH=./environment/envs
 
-  recreate_environment=false
-  if [ ! -d "environment" ]; then
-    recreate_environment=true
-  else
-    if [ "environment.yml" -nt "environment" ]; then
-      echo "environment.yml is newer than environment: updating environment"
-      recreate_environment=true
+    recreate_environment=false
+    if [ ! -d "environment" ]; then
+        recreate_environment=true
+    else
+        if [ "environment.yml" -nt "environment" ]; then
+            echo "environment.yml is newer than environment: updating environment"
+            recreate_environment=true
+        fi
     fi
-  fi
 
-  if "$recreate_environment"; then
-    micromamba -y env create --prefix ./environment --file environment.yml
-  fi
+    if "$recreate_environment"; then
+        micromamba -y env create --prefix ./environment/local --file environment.yml
+    fi
 
-  micromamba activate ./environment
+    micromamba activate ./environment/local
 
-  $@
+    $@
