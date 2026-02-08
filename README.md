@@ -51,11 +51,12 @@ dependencies:
   - numpy
   - pandas
 ```
+
 You need to do this:
 ```yaml
 name: stats
 channels:
-  - defaults
+  - conda-forge
 dependencies:
   - numpy
   - pandas
