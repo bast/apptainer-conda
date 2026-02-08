@@ -15,7 +15,7 @@ jobs:
     permissions: write-all
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
 
       - name: Get latest tag
         run: |
@@ -44,7 +44,7 @@ jobs:
       - uses: eWaterCycle/setup-apptainer@v2
         if: ${{ env.release_tag != env.latest_tag }}
         with:
-          apptainer-version: 1.4.1
+          apptainer-version: 1.4.5
 
       - name: Build the container(s)
         if: ${{ env.release_tag != env.latest_tag }}
